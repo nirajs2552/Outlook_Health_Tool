@@ -1,0 +1,21 @@
+# Build artifacts
+bin/
+obj/
+.vs/
+out/
+publish/
+
+# Runtime artifacts
+Reports/*.html
+Reports/*.json
+Logs/*.log
+
+# Local files
+*.user
+*.suo
+*.userosscache
+*.pdb
+
+# Secrets / local configuration
+*.env
+appsettings.Local.json
