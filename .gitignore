@@ -1,0 +1,17 @@
+bin/
+obj/
+.vs/
+out/
+publish/
+
+*.user
+*.suo
+*.pdb
+
+Logs/*
+!Logs/.gitkeep
+
+Reports/*
+!Reports/.gitkeep
+
+*.lnk

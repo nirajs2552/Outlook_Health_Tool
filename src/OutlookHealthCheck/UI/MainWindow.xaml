@@ -1,0 +1,117 @@
+<Window x:Class="OutlookHealthCheck.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:OutlookHealthCheck.UI"
+        Title="Outlook Health Check" Height="760" Width="1040" MinHeight="680" MinWidth="920" Background="#F5F7FA" FontFamily="Segoe UI">
+    <Window.DataContext>
+        <ui:MainViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="#1F3A5F" Padding="24,18">
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Content="Settings" Padding="12,6"/>
+                <StackPanel>
+                    <TextBlock Text="OUTLOOK HEALTH CHECK" Foreground="White" FontSize="23" FontWeight="SemiBold"/>
+                    <TextBlock Text="Microsoft Outlook Diagnostic Assistant" Foreground="#C7D7EA" FontSize="13"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="24">
+                <Grid Margin="0,0,0,14">
+                    <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                    <Border Background="White" BorderBrush="#D9E1EA" BorderThickness="1" CornerRadius="6" Padding="18" Margin="0,0,8,0">
+                        <StackPanel>
+                            <TextBlock Text="HEALTH SCORE" FontWeight="SemiBold" Foreground="#53657A"/>
+                            <TextBlock Text="{Binding Report.Health.HealthScore, TargetNullValue=-}" FontSize="44" FontWeight="Bold"/>
+                            <ProgressBar Height="10" Maximum="100" Value="{Binding Report.Health.HealthScore}"/>
+                            <TextBlock Text="{Binding CurrentStatus}" Margin="0,10,0,0" Foreground="#53657A"/>
+                            <ProgressBar Height="8" Maximum="100" Value="{Binding Progress}" Margin="0,6,0,0"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="1" Background="White" BorderBrush="#D9E1EA" BorderThickness="1" CornerRadius="6" Padding="18" Margin="8,0,0,0">
+                        <StackPanel>
+                            <TextBlock Text="DIAGNOSTIC STATUS" FontWeight="SemiBold" Foreground="#53657A"/>
+                            <TextBlock Text="{Binding Report.Health.DiagnosticConfidence, StringFormat=Diagnostic Confidence: {0}, TargetNullValue=Diagnostic Confidence: -}" Margin="0,10,0,0"/>
+                            <TextBlock Text="{Binding Report.Health.RootCauseConfidence, StringFormat=Root Cause Confidence: {0}, TargetNullValue=Root Cause Confidence: -}"/>
+                            <TextBlock Text="{Binding Report.Outlook.ActiveClient, StringFormat=Active Client: {0}, TargetNullValue=Active Client: -}" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                <Border Background="White" BorderBrush="#D9E1EA" BorderThickness="1" CornerRadius="6" Padding="18" Margin="0,0,0,14">
+                    <StackPanel>
+                        <TextBlock Text="USER SYMPTOM" FontWeight="SemiBold" Foreground="#53657A"/>
+                        <ComboBox ItemsSource="{Binding Symptoms}" SelectedItem="{Binding SelectedSymptom}" Margin="0,8,0,0" Height="32" Width="360" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="White" BorderBrush="#D9E1EA" BorderThickness="1" CornerRadius="6" Padding="18" Margin="0,0,0,14">
+                    <StackPanel>
+                        <TextBlock Text="CRITICAL / IMPORTANT FINDINGS" FontWeight="SemiBold" Foreground="#53657A"/>
+                        <ItemsControl ItemsSource="{Binding ImportantFindings}" Margin="0,10,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#E4EAF1" BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,0,8">
+                                        <StackPanel>
+                                            <TextBlock FontWeight="SemiBold"><Run Text="{Binding Status}"/><Run Text=" - "/><Run Text="{Binding Name}"/></TextBlock>
+                                            <TextBlock Text="{Binding Finding}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                            <TextBlock Text="{Binding Recommendation}" TextWrapping="Wrap" Foreground="#53657A" Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+                <Grid Margin="0,0,0,14">
+                    <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                    <Border Background="White" BorderBrush="#D9E1EA" BorderThickness="1" CornerRadius="6" Padding="18" Margin="0,0,8,0">
+                        <StackPanel>
+                            <TextBlock Text="OUTLOOK PROFILES" FontWeight="SemiBold" Foreground="#53657A"/>
+                            <DataGrid ItemsSource="{Binding Profiles}" AutoGenerateColumns="False" IsReadOnly="True" Height="160" Margin="0,10,0,0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Profile" Binding="{Binding ProfileName}" Width="*"/>
+                                    <DataGridTextColumn Header="Default" Binding="{Binding IsDefault}" Width="90"/>
+                                    <DataGridTextColumn Header="Evidence" Binding="{Binding ProfileEvidence}" Width="2*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="1" Background="White" BorderBrush="#D9E1EA" BorderThickness="1" CornerRadius="6" Padding="18" Margin="8,0,0,0">
+                        <StackPanel>
+                            <TextBlock Text="CONFLICTING / INCONCLUSIVE EVIDENCE" FontWeight="SemiBold" Foreground="#53657A"/>
+                            <ItemsControl ItemsSource="{Binding Contradictions}" Margin="0,10,0,0">
+                                <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding Title}" TextWrapping="Wrap" Margin="0,0,0,8"/></DataTemplate></ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                <Border Background="White" BorderBrush="#D9E1EA" BorderThickness="1" CornerRadius="6" Padding="18">
+                    <StackPanel>
+                        <TextBlock Text="DIAGNOSTIC DETAILS" FontWeight="SemiBold" Foreground="#53657A"/>
+                        <DataGrid ItemsSource="{Binding Diagnostics}" AutoGenerateColumns="False" IsReadOnly="True" Height="220" Margin="0,10,0,0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="110"/>
+                                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="140"/>
+                                <DataGridTextColumn Header="Check" Binding="{Binding Name}" Width="220"/>
+                                <DataGridTextColumn Header="Finding" Binding="{Binding Finding}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+        <Border Grid.Row="2" Background="White" BorderBrush="#D9E1EA" BorderThickness="1,1,0,0" Padding="16">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Run Quick Check" Command="{Binding RunQuickCommand}" Padding="14,8" Margin="0,0,8,0"/>
+                <Button Content="Run Full Check" Command="{Binding RunFullCommand}" Padding="14,8" Margin="0,0,8,0"/>
+                <Button Content="Cancel" Command="{Binding CancelCommand}" Padding="14,8" Margin="0,0,8,0"/>
+                <Button Content="HTML Report" Command="{Binding OpenReportCommand}" Padding="14,8"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

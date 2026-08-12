@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/OutlookHealthCheck/OutlookHealthCheck.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OutlookHealthCheck.Tests/OutlookHealthCheck.Tests.csproj" />
+  </Folder>
+</Solution>
